@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <title>Superheroes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body { 
+      font-family: 'Quicksand', sans-serif;
+      margin: 24px;
+      color: white;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: rgb(14, 15, 14);
+      /* background: linear-gradient(to bottom, rgb(202, 247, 6), rgb(238, 238, 28))
+      } */}
+    h1 { 
+      margin: 0 0 16px;
+     }
+    .meta { 
+      color: #555;
+      margin-bottom: 16px;
+    }
+    table { 
+      width: 100%; 
+      border-collapse: collapse;
+    }
+    th, td { 
+      padding: 10px 8px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: top; }
+
+    .separadorLista { 
+      display: inline-block;
+      padding: 2px 8px;
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      margin: 2px 6px 2px 0;
+      font-size: 12px;
+    }
+    .listaVacia { 
+      padding: 16px;
+      border: 1px dashed white;
+      border-radius: 8px; }
+    .agregarSuper{ 
+      display: flex;
+      justify-content: right;}
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <h1>Lista de superheroes</h1>
+
+  <!-- Agregar -->
+  <div class="agregarSuper">
+    <a href="/api/heroes/agregar-superheroe">
+      <img src="/image/agregar.png" width="50px">
+    </a>
+  </div>
+
+  <!-- PRIMERO, un if, que muestra un mensaje para cuando no haya superheroes, y en caso de que eso no sea asi, ahi recien se crea la tabla -->
+  <% if (!superheroes || superheroes.length === 0) { %>
+    <div class="listaVacia">No hay superhéroes cargados.</div>
+  <% } else { %> 
+    <table>
+      <thead>
+        <tr>
+
+          <th>Acciones</th>
+          <th>Nombre</th>
+          <th>Nombre real</th>
+          <th>Edad</th>
+          <th>Planeta</th>
+          <th>Debilidad</th>
+          <th>Poderes</th>
+          <th>Aliados</th>
+          <th>Enemigos</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <!-- SEGUNDO. En el body de la tabla se recorre superheroes con el foreach para mostrar nombres, edad, etc en su repectiva celda -->
+
+        <% superheroes.forEach(element => { %>
+         
+        <% }) %>
+
+        <% superheroes.forEach((superheroe) => { %>
+          <tr>
+            <td>
+              
+              <a href="/api/heroes/<%= superheroe.id %>/editar-superheroe"> 
+                <img src="/image/edit.png" width="30px"></a>
+                &nbsp;
+              <a href="/api/heroes/<%= superheroe.id %>/eliminado" onclick="return confirm('Seguro que deseas eliminar a <%= superheroe.nombreSuperheroe %>? Esta acción no se puede deshacer')">
+                <img src="/image/eliminar.png" width="30px"></a></td>
+
+            <td><%= superheroe.nombreSuperheroe ?? '-' %></td> <!-- Se muestra el valor solicitado o en su defecto un guion -->
+            <td><%= superheroe.nombreReal ?? '-' %></td>
+            <td><%= superheroe.edad ?? '-' %></td>
+            <td><%= superheroe.planetaOrigen ?? '-' %></td>
+            <td><%= superheroe.debilidad ?? '-' %></td>
+
+            <!-- Esto maneja los campos donde se agrega mas de un valor porque van a ir a su respectivo array -->
+            <td>
+
+              <% if (Array.isArray(superheroe.poderes) && superheroe.poderes.length) { %>
+
+                <% superheroe.poderes.forEach((poderes) => { %>
+                  <span class="separadorLista"><%= poderes %></span>
+                <% }) %>
+
+              <% } else { %>
+                -
+              <% } %>
+            </td>
+            <td>
+
+              <% if (Array.isArray(superheroe.aliados) && superheroe.aliados.length){ %>
+
+                <% superheroe.aliados.forEach((aliados) => { %>
+                  <span class="separadorLista"><%= aliados %></span>
+                <% }) %>
+
+              <% } else { %>
+                - 
+              <% } %>
+              </td>
+            <td>
+
+              <% if (Array.isArray(superheroe.enemigos) && superheroe.enemigos.length){ %>
+
+                <% superheroe.enemigos.forEach((enemigos) => { %>
+                  <span class="separadorLista"><%= enemigos %></span>
+                <% }) %>
+
+              <% } else { %>
+                - 
+              <% } %>
+            </td>                       
+
+          </tr>
+        <% }) %>
+        
+      </tbody>
+    </table>
+  <% } %>
+
+
+
+</body>
+</html>

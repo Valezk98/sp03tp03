@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <title>Editar superheroe</title>
+    <style>
+        body {
+            font-family: 'Quicksand',sans-serif;
+            color: white ;
+            padding: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgb(14, 15, 14);
+        }
+        h1 {
+            margin: 0 0 16px;
+            text-shadow: 2px 2px 10px rgb(34, 99, 153);
+        }
+        form {
+            display: grid;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 10px;
+        }
+        .seccionGrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        label {
+            display: grid;
+            gap: 6px;
+            font-weight: 600;
+        }
+        input {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font: inherit;
+            outline: none;
+        }
+        .sombreado-txt {
+            text-shadow: 2px 2px 10px rgb(0, 0, 0);
+        }
+        .pista {
+            color: #555555;
+            font-size: 12px;
+        }
+        .btnGuardar {
+            padding:
+            10px 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #0b9444;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            width: 150px;
+        }
+        .btnBorrar {
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #850d0d; color: white;
+            font-weight: 700;
+            cursor: pointer;
+            width: fit-content;
+        }
+        .btnGuardar:hover{
+            scale: 1.1;
+            transition: 400ms;
+            background-color: #00ff6a;
+        }
+        .btnBorrar:hover{
+            scale: 1.1;
+            transition: 400ms;
+            background-color: #ff0000;
+        }
+        .botones {
+            display: flex;
+            gap: 10px
+        }
+        .SuperEditado {
+            margin-top: 16px;
+            padding: 16px;
+            border: 1px solid #c7f9cc;
+            background: #f0fff4;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 720px)
+        { 
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('partials/header') %>
+
+    <h1>Editar superheroe</h1>
+
+    <form method="POST" action="<%= superheroe ? `/api/heroes/${superheroe._id}/editado` : '/api/heroes/editado' %>">
+        <div class="seccionGrid">
+            <label>
+                <span class="sombreado-txt">Nombre de superhéroe</span>
+                <input name="nombreSuperheroe" required value="<%= superheroe ? superheroe.nombreSuperheroe : '' %>">
+            </label>
+            <label>
+                <span class="sombreado-txt">Nombre real</span>
+                <input name="nombreReal" required value="<%= superheroe ? superheroe.nombreReal : '' %>">
+            </label>
+        </div>
+
+        <div class="seccionGrid">
+            <label>
+                <span class="sombreado-txt">Edad</span>
+                <input name="edad" type="number" min="0" required value="<%= superheroe ? superheroe.edad : '' %>">
+            </label>
+            <label>
+                <span class="sombreado-txt">Creador</span>
+                <input name="creador" required value="<%= superheroe ? superheroe.creador : '' %>">
+            </label>
+        </div>
+
+        <div class="seccionGrid">
+            <label>
+                <span class="sombreado-txt">Planeta de origen</span>
+                <input name="planetaOrigen" required value="<%= superheroe ? superheroe.planetaOrigen : '' %>">
+            </label>
+            <label>
+                <span class="sombreado-txt">Debilidad</span>
+                <input name="debilidad" required value="<%= superheroe ? superheroe.debilidad : '' %>">
+            </label>
+        </div>
+
+        <label>
+            <span class="sombreado-txt">Poderes</span>
+            <input name="poderes" required value="<%= superheroe && Array.isArray(superheroe.poderes) ? superheroe.poderes.join(', ') : (superheroe ? superheroe.poderes : '') %>">
+            <span class="pista"><span style="color:red">IMPORTANTE</span>. Separa con comas. Ej: volar, fuerza sobrehumana</span>
+        </label>
+
+        <label>
+            <span class="sombreado-txt">Aliados</span>
+            <input name="aliados" required value="<%= superheroe && Array.isArray(superheroe.aliados) ? superheroe.aliados.join(', ') : (superheroe ? superheroe.aliados : '') %>">
+            <span class="pista"><span style="color:red">IMPORTANTE</span>. Separa con comas. Ej: Hulk, Wonder Woman</span>
+        </label>
+
+        <label>
+            <span class="sombreado-txt">Enemigos</span>
+            <input name="enemigos" value="<%= superheroe && Array.isArray(superheroe.enemigos) ? superheroe.enemigos.join(', ') : (superheroe ? superheroe.enemigos : '') %>">
+            <span class="pista"><span style="color:red">IMPORTANTE</span>. Separá con comas. Ej: Thanos, Green goblin</span>
+        </label>
+
+        <div class="botones">
+            <button type="submit" class="btnGuardar">Guardar</button>
+            <button type="reset" class="btnBorrar">Borrar</button>
+        </div>
+        
+        
+    </form>
+
+    <!-- <% if (superheroe) { %>
+        <div class="SuperEditado">
+            <strong style="color: #00ff6a">Superheroe actualizad</strong>
+            <div class="mono" style="color: black; font-weight: 600"><%= JSON.stringify(superheroe, null, 2) %></div>
+        </div>
+    <% } %> -->
+</body>
+</html>
